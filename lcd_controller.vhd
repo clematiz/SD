@@ -46,6 +46,7 @@ begin
 		end if;
 	end process;
 
+	-- AQUI FOI ADICIONADO cmd_in, write_en E char_in PARA EVITAR WARNINGS 
 	process(state_reg, timer_reg, step_reg, char_count_reg, byte_reg, rs_reg, is_init_reg, bksp_step_reg, lcd_e_reg, lcd_data_reg, char_in, write_en, cmd_in)
 	begin
 		state_next <= state_reg; timer_next <= timer_reg; step_next <= step_reg;
