@@ -18,7 +18,16 @@ begin
 		variable shift_int: integer range 0 to 31;
 		variable idx_out: integer range -31 to 63;
 	begin
-		shift_int := to_integer(unsigned(shift));
+        -- INICIALIZAÇÃO BASE PARA PREVENIR LATCH/WARNING NO XST
+        idx_in := 0;
+        shift_int := 0;
+        idx_out := 0;
+        
+        -- Verifica apenas se não possui metavalores lógicos
+        if not is_X(shift) then
+		    shift_int := to_integer(unsigned(shift));
+        end if;
+
 		if shift_int > 25 then
 			shift_int := shift_int - 26;
 		end if;
@@ -27,10 +36,14 @@ begin
 			idx_in := to_integer(unsigned(ascii_in)) - 65;
 			if mode = '0' then
 				idx_out := idx_in + shift_int;
-				if idx_out >= 26 then idx_out := idx_out - 26; end if;
+				if idx_out >= 26 then 
+                    idx_out := idx_out - 26; 
+                end if;
 			else
 				idx_out := idx_in - shift_int;
-				if idx_out < 0 then idx_out := idx_out + 26; end if;
+				if idx_out < 0 then 
+                    idx_out := idx_out + 26; 
+                end if;
 			end if;
 			ascii_out <= std_logic_vector(to_unsigned(idx_out + 65, 8));
 		else
